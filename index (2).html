@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TK.HOUSE Marketing Agent</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0c0c0c;color:#e0d8c8;font-family:sans-serif;display:flex;height:100vh;overflow:hidden;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-thumb{background:rgba(201,162,39,0.3);border-radius:2px;}
+#sidebar{width:200px;background:#161616;border-right:1px solid rgba(201,162,39,0.15);display:flex;flex-direction:column;flex-shrink:0;}
+.sid-head{padding:14px 12px;border-bottom:1px solid rgba(201,162,39,0.15);display:flex;align-items:center;gap:8px;}
+.logo-ic{width:30px;height:30px;background:linear-gradient(135deg,#c9a227,#f5d98b);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.logo-tx{font-size:.9rem;font-weight:800;letter-spacing:.08em;color:#fff;}
+.logo-sub{font-size:9px;color:#c9a227;letter-spacing:.12em;text-transform:uppercase;}
+.nav-section{padding:8px 6px;}
+.nav-label{padding:8px 8px 4px;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#6a6258;}
+.nav-btn{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;color:rgba(255,255,255,.5);background:transparent;border:none;width:100%;text-align:left;margin:1px 0;transition:all .15s;}
+.nav-btn:hover{background:rgba(201,162,39,.07);color:rgba(255,255,255,.8);}
+.nav-btn.active{background:rgba(201,162,39,.12);color:#f5d98b;}
+.hotline-box{padding:12px;border-top:1px solid rgba(201,162,39,.1);margin-top:auto;}
+.hotline-inner{background:rgba(201,162,39,.06);border:1px solid rgba(201,162,39,.15);border-radius:6px;padding:10px;}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+#topbar{background:rgba(12,12,12,.95);border-bottom:1px solid rgba(201,162,39,.15);padding:0 20px;height:52px;display:flex;align-items:center;flex-shrink:0;}
+.agent-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#2dc653;}
+.dot{width:7px;height:7px;border-radius:50%;background:#2dc653;display:inline-block;}
+#content{flex:1;overflow-y:auto;padding:24px;}
+.page{display:none;} .page.active{display:block;}
+.page-title{font-size:1.6rem;color:#fff;margin-bottom:4px;font-family:serif;}
+.page-desc{font-size:13px;color:#6a6258;margin-bottom:20px;}
+.card{background:#161616;border:1px solid rgba(201,162,39,.12);border-radius:8px;padding:20px;margin-bottom:16px;}
+.card-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c9a227;margin-bottom:14px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.stat{background:#202020;border:1px solid rgba(201,162,39,.12);border-radius:6px;padding:16px;text-align:center;}
+.stat-val{font-size:1.8rem;font-weight:800;color:#f5d98b;line-height:1;}
+.stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#6a6258;margin-top:4px;}
+.stat-sub{font-size:11px;color:#c9a227;margin-top:2px;}
+.form-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#c9a227;margin-bottom:6px;display:block;}
+select,textarea,input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(201,162,39,.18);border-radius:4px;padding:9px 12px;color:#e0d8c8;font-size:13px;outline:none;font-family:sans-serif;margin-bottom:14px;}
+select{background:#202020;} textarea{resize:vertical;min-height:80px;}
+.btn-gold{padding:9px 20px;background:linear-gradient(135deg,#c9a227,#f5d98b);border:none;border-radius:4px;color:#0c0c0c;font-weight:700;font-size:12px;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;width:100%;}
+.btn-outline{padding:7px 14px;background:transparent;border:1px solid rgba(201,162,39,.3);border-radius:4px;color:#c9a227;font-weight:700;font-size:11px;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;margin-right:6px;margin-top:8px;}
+.ai-box{background:#202020;border:1px solid rgba(201,162,39,.2);border-left:3px solid #c9a227;border-radius:4px;padding:16px;font-size:13px;line-height:1.8;color:rgba(255,255,255,.85);white-space:pre-wrap;min-height:100px;}
+.ai-box.loading{color:#c9a227;}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:10px;border-radius:6px;margin-bottom:8px;}
+.task-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;align-self:flex-start;}
+.chat-msgs{max-height:350px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.chat-row{display:flex;gap:8px;align-items:flex-start;}
+.chat-row.user{flex-direction:row-reverse;}
+.chat-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#c9a227,#f5d98b);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;}
+.chat-bubble{max-width:80%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;background:#202020;color:rgba(255,255,255,.85);}
+.chat-row.user .chat-bubble{background:linear-gradient(135deg,#a07d12,#c9a227);color:#0c0c0c;font-weight:500;}
+.chat-input-row{display:flex;gap:8px;}
+.chat-input-row textarea{margin-bottom:0;flex:1;}
+.send-btn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#c9a227,#f5d98b);border:none;cursor:pointer;font-size:16px;flex-shrink:0;align-self:flex-end;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6a6258;padding:8px 12px;text-align:left;border-bottom:1px solid rgba(201,162,39,.15);}
+td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
+.status-badge{padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.quick-btns{display:flex;flex-direction:column;gap:8px;}
+.quick-btn{display:flex;align-items:center;gap:8px;padding:9px 14px;background:transparent;border:1px solid rgba(201,162,39,.3);border-radius:4px;color:#c9a227;font-weight:700;font-size:12px;cursor:pointer;text-align:left;width:100%;letter-spacing:.06em;}
+.quick-btn:hover{background:rgba(201,162,39,.08);}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="sid-head">
+    <div class="logo-ic">🏠</div>
+    <div><div class="logo-tx">TK.HOUSE</div><div class="logo-sub">Marketing AI</div></div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Tổng Quan</div>
+    <button class="nav-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
+    <div class="nav-label" style="margin-top:8px;">AI Tools</div>
+    <button class="nav-btn" onclick="showTab('content')">✍️ Viết Nội Dung</button>
+    <button class="nav-btn" onclick="showTab('ads')">📢 Tạo Quảng Cáo</button>
+    <button class="nav-btn" onclick="showTab('reply')">💬 Trả Lời Khách</button>
+    <button class="nav-btn" onclick="showTab('chat')">🤖 Tư Vấn AI <span style="margin-left:auto;background:#e63946;color:#fff;font-size:9px;padding:1px 6px;border-radius:10px;">24/7</span></button>
+    <div class="nav-label" style="margin-top:8px;">Quản Lý</div>
+    <button class="nav-btn" onclick="showTab('leads')">👥 Khách Hàng <span style="margin-left:auto;background:#e63946;color:#fff;font-size:9px;padding:1px 6px;border-radius:10px;">3</span></button>
+  </div>
+  <div class="hotline-box">
+    <div class="hotline-inner">
+      <div style="font-size:10px;color:#c9a227;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">Hotline</div>
+      <div style="font-size:13px;font-weight:600;color:#fff;">0909.82.9696</div>
+      <div style="font-size:11px;color:#6a6258;">arc.tkhouse@gmail.com</div>
+    </div>
+  </div>
+</div>
+
+<div id="main">
+  <div id="topbar">
+    <span style="font-weight:800;font-size:.95rem;letter-spacing:.06em;color:#c9a227;">TK.HOUSE Agent</span>
+    <div class="agent-status"><span class="dot"></span>Agent đang hoạt động</div>
+  </div>
+  <div id="content">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div style="font-size:1.6rem;color:#fff;margin-bottom:4px;font-family:serif;">Chào buổi sáng, TK.HOUSE! 👋</div>
+      <div style="font-size:13px;color:#6a6258;margin-bottom:20px;">Hôm nay có 3 lead mới cần gọi lại. Agent sẵn sàng hỗ trợ!</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-val">3</div><div class="stat-lbl">Lead Mới</div><div class="stat-sub">↑ Gọi ngay!</div></div>
+        <div class="stat"><div class="stat-val">12</div><div class="stat-lbl">Lead Tháng</div><div class="stat-sub">~83k/lead</div></div>
+        <div class="stat"><div class="stat-val">2</div><div class="stat-lbl">Hợp Đồng</div><div class="stat-sub">↑ Tháng này</div></div>
+        <div class="stat"><div class="stat-val">4.8★</div><div class="stat-lbl">Đánh Giá</div><div class="stat-sub">Google & FB</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">⚡ Tạo Nhanh Với AI</div>
+          <div class="quick-btns">
+            <button class="quick-btn" onclick="quickAI('Viết 1 bài đăng Facebook Before/After công trình cho TK.HOUSE. 150-200 từ, emoji, hashtag, CTA gọi 0909.82.9696.','Viết Bài Đăng Fanpage')">✍️ Viết bài đăng Fanpage ngay</button>
+            <button class="quick-btn" onclick="quickAI('Viết 1 mẫu quảng cáo Facebook Lead Ads cho TK.HOUSE, mục tiêu khách để lại SĐT. Primary text 100-150 từ + Headline + CTA.','Kịch Bản Quảng Cáo')">📢 Tạo kịch bản quảng cáo</button>
+            <button class="quick-btn" onclick="quickAI('Viết script gọi điện lead mới cho TK.HOUSE. Ngắn gọn, mục tiêu đặt lịch khảo sát. Có mở đầu - hỏi nhu cầu - chốt lịch hẹn.','Script Gọi Điện')">📞 Script gọi điện lead mới</button>
+            <button class="quick-btn" onclick="quickAI('Viết tin nhắn Zalo ngắn gọn gửi khách sau khi gọi không nghe máy. Thân thiện, CTA gọi lại 0909.82.9696.','Tin Nhắn Zalo')">📱 Soạn tin nhắn Zalo</button>
+            <button class="quick-btn" onclick="quickAI('Hướng dẫn cách TK.HOUSE tư vấn báo giá sơ bộ qua điện thoại cho nhà phố 4x15m 3 tầng TPHCM, ngân sách 1.5-2 tỷ.','Tư Vấn Báo Giá')">💰 Tư vấn báo giá sơ bộ</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚡ Việc Cần Làm Hôm Nay</div>
+          <div class="task-item" style="background:rgba(230,57,70,.06);border:1px solid rgba(230,57,70,.2);">
+            <span>📞</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#fff;">Gọi lại 3 lead mới</div><div style="font-size:11px;color:#6a6258;">Nguyễn Văn A · Trần Thị B · Lê Văn C</div></div>
+            <span class="task-badge" style="background:rgba(230,57,70,.2);color:#e63946;border:1px solid rgba(230,57,70,.4);">GẤP</span>
+          </div>
+          <div class="task-item" style="background:rgba(201,162,39,.05);border:1px solid rgba(201,162,39,.15);">
+            <span>📝</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#fff;">Đăng bài Thứ 3 hôm nay</div><div style="font-size:11px;color:#6a6258;">Ảnh Before/After Q.Bình Thạnh</div></div>
+            <span class="task-badge" style="background:rgba(201,162,39,.15);color:#c9a227;border:1px solid rgba(201,162,39,.3);">HÔM NAY</span>
+          </div>
+          <div class="task-item" style="background:rgba(45,198,83,.05);border:1px solid rgba(45,198,83,.15);">
+            <span>📊</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:#fff;">Kiểm tra kết quả ads</div><div style="font-size:11px;color:#6a6258;">Chi phí hôm qua: 95,000đ · 2 lead</div></div>
+            <span class="task-badge" style="background:rgba(45,198,83,.15);color:#2dc653;border:1px solid rgba(45,198,83,.3);">OK</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" id="quick-card" style="display:none;">
+        <div class="card-title" id="quick-title">Kết Quả AI</div>
+        <div class="ai-box" id="quick-output"></div>
+        <button class="btn-outline" onclick="copyText('quick-output')">📋 Copy</button>
+      </div>
+    </div>
+
+    <!-- VIẾT NỘI DUNG -->
+    <div id="page-content" class="page">
+      <div class="page-title">✍️ Viết Nội Dung Fanpage</div>
+      <div class="page-desc">AI viết bài đăng Facebook chuyên nghiệp cho ngành xây dựng.</div>
+      <div class="grid2">
+        <div class="card">
+          <label class="form-label">Loại nội dung</label>
+          <select id="post-type">
+            <option value="Before & After công trình">🏠 Before & After công trình</option>
+            <option value="Kiến thức xây dựng">📐 Kiến thức xây dựng</option>
+            <option value="Phản hồi khách hàng">⭐ Phản hồi khách hàng</option>
+            <option value="Khuyến mãi ưu đãi">🎁 Khuyến mãi / Ưu đãi</option>
+            <option value="Lễ bàn giao công trình">🔑 Lễ bàn giao</option>
+          </select>
+          <label class="form-label">Mô tả công trình / nội dung</label>
+          <textarea id="post-desc" placeholder="VD: Nhà phố 5x18m, 4 tầng, Q.Bình Thạnh, phong cách hiện đại, thi công 90 ngày..."></textarea>
+          <label class="form-label">Tone giọng văn</label>
+          <select id="post-tone">
+            <option value="chuyên nghiệp và đáng tin">Chuyên nghiệp & Tin cậy</option>
+            <option value="thân thiện gần gũi">Thân thiện & Gần gũi</option>
+            <option value="thuyết phục và kêu gọi hành động">Bán hàng & Thuyết phục</option>
+          </select>
+          <button class="btn-gold" onclick="genPost()">🤖 Tạo Bài Viết Với AI</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Kết Quả AI</div>
+          <div class="ai-box" id="post-output">Bài viết sẽ xuất hiện ở đây sau khi nhấn tạo...</div>
+          <button class="btn-outline" onclick="copyText('post-output')">📋 Copy</button>
+          <button class="btn-outline" onclick="genPost()">🔄 Tạo Lại</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TẠO QUẢNG CÁO -->
+    <div id="page-ads" class="page">
+      <div class="page-title">📢 Tạo Kịch Bản Quảng Cáo</div>
+      <div class="page-desc">AI tạo copy ads tối ưu cho mục tiêu có khách gọi điện.</div>
+      <div class="grid2">
+        <div class="card">
+          <label class="form-label">Mục tiêu quảng cáo</label>
+          <select id="ad-goal">
+            <option value="có khách gọi điện ngay">📞 Có khách gọi điện</option>
+            <option value="thu thập số điện thoại qua form">📋 Thu thập số điện thoại</option>
+            <option value="tăng traffic website">🌐 Tăng traffic website</option>
+          </select>
+          <label class="form-label">Dịch vụ quảng cáo</label>
+          <select id="ad-service">
+            <option value="xây nhà trọn gói">🏗️ Xây nhà trọn gói</option>
+            <option value="thiết kế nội thất">🛋️ Thiết kế nội thất</option>
+            <option value="thiết kế kiến trúc">📐 Thiết kế kiến trúc</option>
+            <option value="cải tạo sửa chữa">🔨 Cải tạo, sửa chữa</option>
+          </select>
+          <label class="form-label">Điểm mạnh muốn nhấn mạnh</label>
+          <textarea id="ad-usp" placeholder="VD: Tặng thiết kế 3D miễn phí, bảo hành 5 năm..."></textarea>
+          <button class="btn-gold" onclick="genAd()">🤖 Tạo Kịch Bản Ads</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Kịch Bản Quảng Cáo</div>
+          <div class="ai-box" id="ad-output">Kịch bản sẽ xuất hiện ở đây...</div>
+          <button class="btn-outline" onclick="copyText('ad-output')">📋 Copy</button>
+          <button class="btn-outline" onclick="genAd()">🔄 Tạo Lại</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRẢ LỜI KHÁCH -->
+    <div id="page-reply" class="page">
+      <div class="page-title">💬 Trả Lời & Chăm Sóc Khách</div>
+      <div class="page-desc">AI soạn script gọi điện, tin nhắn Zalo, reply comment.</div>
+      <div class="grid2">
+        <div class="card">
+          <label class="form-label">Tình huống</label>
+          <select id="reply-type">
+            <option value="script gọi điện cho lead mới vừa để lại thông tin">📞 Script gọi điện lead mới</option>
+            <option value="trả lời khách hỏi giá xây nhà">💰 Khách hỏi giá</option>
+            <option value="thuyết phục khách đang so sánh nhiều nhà thầu chọn TK.HOUSE">🤔 So sánh nhiều nhà thầu</option>
+            <option value="trấn an khách lo ngại về tiến độ thi công">⏰ Lo sợ chậm tiến độ</option>
+            <option value="xử lý khi khách muốn giảm giá thêm">💸 Muốn giảm giá</option>
+            <option value="tin nhắn follow up khách chưa quyết định sau 3-5 ngày">🔄 Follow up chưa quyết định</option>
+            <option value="xử lý phàn nàn khiếu nại của khách chuyên nghiệp">⚠️ Phàn nàn khiếu nại</option>
+            <option value="xin đánh giá 5 sao Google và Facebook">⭐ Xin đánh giá 5 sao</option>
+            <option value="xin giới thiệu khách hàng mới">👥 Xin giới thiệu khách mới</option>
+          </select>
+          <label class="form-label">Thông tin khách (tuỳ chọn)</label>
+          <textarea id="reply-info" placeholder="VD: Anh Minh, 45 tuổi, đất 100m2 Q.7, ngân sách 3 tỷ..."></textarea>
+          <label class="form-label">Kênh liên lạc</label>
+          <select id="reply-channel">
+            <option value="cuộc gọi điện thoại">📞 Gọi điện</option>
+            <option value="tin nhắn Zalo">💬 Zalo / SMS</option>
+            <option value="Facebook Messenger">📱 Facebook Messenger</option>
+            <option value="reply comment công khai">💬 Reply comment</option>
+          </select>
+          <button class="btn-gold" onclick="genReply()">🤖 Tạo Script / Tin Nhắn</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Script / Tin Nhắn</div>
+          <div class="ai-box" id="reply-output">Script sẽ xuất hiện ở đây...</div>
+          <button class="btn-outline" onclick="copyText('reply-output')">📋 Copy</button>
+          <button class="btn-outline" onclick="genReply()">🔄 Tạo Lại</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TƯ VẤN AI -->
+    <div id="page-chat" class="page">
+      <div class="page-title">🤖 Tư Vấn Marketing AI</div>
+      <div class="page-desc">Hỏi bất cứ điều gì về marketing, quảng cáo, chăm sóc khách hàng.</div>
+      <div class="card" style="display:flex;flex-direction:column;">
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="chat-row">
+            <div class="chat-av">🏠</div>
+            <div class="chat-bubble">Xin chào! Tôi là Marketing Agent của TK.HOUSE. Hỏi bất cứ điều gì về marketing, quảng cáo, chăm sóc khách hàng nhé!</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+          <button class="btn-outline" style="font-size:11px;" onclick="askQuick('Ngân sách 100k/ngày nên chạy ads gì?')">💰 Ngân sách 100k/ngày</button>
+          <button class="btn-outline" style="font-size:11px;" onclick="askQuick('Viết caption Before/After nhà phố Q.3')">✍️ Caption Before/After</button>
+          <button class="btn-outline" style="font-size:11px;" onclick="askQuick('Khách hỏi giá thì trả lời thế nào?')">💬 Khách hỏi giá</button>
+          <button class="btn-outline" style="font-size:11px;" onclick="askQuick('Tăng follow Fanpage miễn phí nhanh nhất?')">👍 Tăng follow</button>
+        </div>
+        <div class="chat-input-row">
+          <textarea id="chat-input" placeholder="Hỏi gì cũng được... nhấn Enter để gửi" rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+          <button class="send-btn" onclick="sendChat()">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KHÁCH HÀNG -->
+    <div id="page-leads" class="page">
+      <div class="page-title">👥 Quản Lý Khách Hàng</div>
+      <div style="font-size:13px;color:#6a6258;margin-bottom:20px;">Theo dõi lead từ lúc có thông tin đến khi ký hợp đồng.</div>
+      <div class="card" style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>Khách Hàng</th><th>SĐT</th><th>Nhu Cầu</th><th>Ngân Sách</th><th>Trạng Thái</th><th>Ngày</th><th>Hành Động</th></tr></thead>
+          <tbody id="leads-body"></tbody>
+        </table>
+      </div>
+      <div class="card" id="lead-suggest-card" style="display:none;">
+        <div class="card-title" id="lead-suggest-title">🤖 Gợi Ý AI</div>
+        <div class="ai-box" id="lead-suggest-output"></div>
+        <button class="btn-outline" onclick="copyText('lead-suggest-output')">📋 Copy</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SYSTEM = `Bạn là Marketing Agent chuyên nghiệp của TK.HOUSE - Thiết Kế & Xây Dựng TP.HCM.
+Hotline: 0909.82.9696 | Email: arc.tkhouse@gmail.com | 169 Trần Văn Đang, P.11, Q.3, TP.HCM
+15+ năm kinh nghiệm, 500+ công trình | Website: tk-house.id.vn
+Dịch vụ: Thiết kế nội thất, kiến trúc, thi công xây dựng
+Giá: Gói TK 3-5tr/m², Gói TC 5-8tr/m², Gói Premium 8-15tr/m²
+Phong cách: Tiếng Việt, thân thiện, chuyên nghiệp, ngắn gọn, CTA gọi 0909.82.9696`;
+
+const LEADS = [
+  {name:"Nguyễn Văn A",phone:"0901 234 567",need:"Nhà phố 5x18m, 4T",budget:"2–3 tỷ",status:"new",source:"Facebook Ads",date:"Hôm nay"},
+  {name:"Trần Thị B",phone:"0912 345 678",need:"Nội thất căn hộ 80m²",budget:"300–500tr",status:"new",source:"Zalo",date:"Hôm nay"},
+  {name:"Lê Văn C",phone:"0923 456 789",need:"Biệt thự 200m², 2T",budget:"Trên 5 tỷ",status:"new",source:"Website",date:"Hôm nay"},
+  {name:"Phạm Hữu D",phone:"0934 567 890",need:"Nhà phố 4x15m, 3T",budget:"1.5–2 tỷ",status:"called",source:"Facebook Ads",date:"Hôm qua"},
+  {name:"Hoàng Thị E",phone:"0945 678 901",need:"Cải tạo nhà 60m²",budget:"200–300tr",status:"meeting",source:"Giới thiệu",date:"3 ngày trước"},
+  {name:"Vũ Minh F",phone:"0956 789 012",need:"Nhà phố 6x20m, 5T",budget:"4–5 tỷ",status:"won",source:"Facebook Ads",date:"2 tuần trước"},
+];
+
+const STATUS = {
+  new:{label:"Mới",color:"#4a9eff",bg:"rgba(74,158,255,.12)"},
+  called:{label:"Đã gọi",color:"#c9a227",bg:"rgba(201,162,39,.12)"},
+  meeting:{label:"Đã hẹn",color:"#2dc653",bg:"rgba(45,198,83,.12)"},
+  won:{label:"Đã ký HĐ ✓",color:"#5eff8a",bg:"rgba(45,198,83,.2)"}
+};
+
+// Render leads
+function renderLeads() {
+  const tbody = document.getElementById('leads-body');
+  tbody.innerHTML = LEADS.map((l,i) => `
+    <tr>
+      <td><strong>${l.name}</strong><br><span style="font-size:11px;color:#6a6258;">${l.source}</span></td>
+      <td>${l.phone}</td><td>${l.need}</td><td>${l.budget}</td>
+      <td><span class="status-badge" style="background:${STATUS[l.status].bg};color:${STATUS[l.status].color};border:1px solid ${STATUS[l.status].color}40;">${STATUS[l.status].label}</span></td>
+      <td style="color:#6a6258;">${l.date}</td>
+      <td><button class="btn-outline" style="margin:0;" onclick="aiSuggest(${i})">🤖 Gợi ý</button></td>
+    </tr>`).join('');
+}
+renderLeads();
+
+// Tab switching
+function showTab(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// Claude API call
+async function callClaude(prompt, outputId) {
+  const el = document.getElementById(outputId);
+  el.textContent = '🤖 AI đang tạo nội dung...';
+  el.classList.add('loading');
+  try {
+    const r = await fetch('/api/claude', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt, system: SYSTEM })
+    });
+    const d = await r.json();
+    const text = d.content?.[0]?.text || d.error?.message || JSON.stringify(d).slice(0,200);
+    el.textContent = text;
+    el.classList.remove('loading');
+    return text;
+  } catch(e) {
+    el.textContent = '❌ Lỗi: ' + e.message;
+    el.classList.remove('loading');
+  }
+}
+
+function copyText(id) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent);
+  alert('✅ Đã copy!');
+}
+
+// Quick actions
+async function quickAI(prompt, title) {
+  document.getElementById('quick-card').style.display = 'block';
+  document.getElementById('quick-title').textContent = '🤖 ' + title;
+  await callClaude(prompt, 'quick-output');
+  document.getElementById('quick-card').scrollIntoView({behavior:'smooth'});
+}
+
+// Generate post
+function genPost() {
+  const type = document.getElementById('post-type').value;
+  const desc = document.getElementById('post-desc').value;
+  const tone = document.getElementById('post-tone').value;
+  const prompt = `Viết 1 bài đăng Facebook loại "${type}" cho TK.HOUSE. Thông tin: ${desc || 'Công trình nhà phố điển hình tại TPHCM'}. Giọng văn: ${tone}. Yêu cầu: 150-250 từ, emoji phù hợp, CTA gọi 0909.82.9696, 3-5 hashtag cuối bài.`;
+  callClaude(prompt, 'post-output');
+}
+
+// Generate ad
+function genAd() {
+  const goal = document.getElementById('ad-goal').value;
+  const svc = document.getElementById('ad-service').value;
+  const usp = document.getElementById('ad-usp').value;
+  const prompt = `Tạo kịch bản quảng cáo Facebook cho TK.HOUSE:\n- Mục tiêu: ${goal}\n- Dịch vụ: ${svc}\n- Điểm mạnh: ${usp || 'thiết kế 3D miễn phí, bảo hành 5 năm, 15 năm kinh nghiệm'}\nYêu cầu:\n1. Primary text (150-200 từ)\n2. Headline (tối đa 40 ký tự)\n3. Description (30 ký tự)\n4. CTA button nên dùng loại nào?`;
+  callClaude(prompt, 'ad-output');
+}
+
+// Generate reply
+function genReply() {
+  const type = document.getElementById('reply-type').value;
+  const info = document.getElementById('reply-info').value;
+  const channel = document.getElementById('reply-channel').value;
+  const prompt = `Viết ${type} cho TK.HOUSE qua kênh ${channel}.\n${info ? 'Thông tin khách: '+info : ''}\nYêu cầu: Tự nhiên, thuyết phục, chuyên nghiệp.`;
+  callClaude(prompt, 'reply-output');
+}
+
+// Chat
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  const msgs = document.getElementById('chat-msgs');
+  msgs.innerHTML += `<div class="chat-row user"><div class="chat-bubble">${msg}</div></div>`;
+  msgs.innerHTML += `<div class="chat-row" id="typing"><div class="chat-av">🏠</div><div class="chat-bubble" style="color:#c9a227;">Đang suy nghĩ...</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  try {
+    const r = await fetch('/api/claude', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt: msg, system: SYSTEM + '\n\nTư vấn marketing thực chiến, cụ thể, ngắn gọn.' })
+    });
+    const d = await r.json();
+    const reply = d.content?.[0]?.text || 'Xin lỗi, có lỗi xảy ra.';
+    document.getElementById('typing').remove();
+    msgs.innerHTML += `<div class="chat-row"><div class="chat-av">🏠</div><div class="chat-bubble">${reply.replace(/\n/g,'<br>')}</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  } catch(e) {
+    document.getElementById('typing').remove();
+    msgs.innerHTML += `<div class="chat-row"><div class="chat-av">🏠</div><div class="chat-bubble">❌ Lỗi: ${e.message}</div></div>`;
+  }
+}
+
+function askQuick(q) {
+  document.getElementById('chat-input').value = q;
+  showTab('chat');
+  setTimeout(sendChat, 100);
+}
+
+// AI suggest for lead
+async function aiSuggest(i) {
+  const l = LEADS[i];
+  document.getElementById('lead-suggest-card').style.display = 'block';
+  document.getElementById('lead-suggest-title').textContent = '🤖 Gợi Ý AI — ' + l.name;
+  const prompt = `Khách hàng ${l.name}, nhu cầu: ${l.need}, ngân sách: ${l.budget}.\nGợi ý cho TK.HOUSE:\n1. Script gọi điện ngắn (3-4 câu mở đầu)\n2. Điểm cần khai thác thêm\n3. Gói dịch vụ phù hợp nhất\n4. 1 offer đặc biệt để chốt nhanh`;
+  await callClaude(prompt, 'lead-suggest-output');
+  document.getElementById('lead-suggest-card').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
