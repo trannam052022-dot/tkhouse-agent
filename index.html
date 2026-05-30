@@ -71,14 +71,14 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
   </div>
   <div class="nav-section">
     <div class="nav-label">Tổng Quan</div>
-    <button class="nav-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
+    <button class="nav-btn active" onclick="showTab('dashboard',this)">📊 Dashboard</button>
     <div class="nav-label" style="margin-top:8px;">AI Tools</div>
-    <button class="nav-btn" onclick="showTab('content')">✍️ Viết Nội Dung</button>
-    <button class="nav-btn" onclick="showTab('ads')">📢 Tạo Quảng Cáo</button>
-    <button class="nav-btn" onclick="showTab('reply')">💬 Trả Lời Khách</button>
-    <button class="nav-btn" onclick="showTab('chat')">🤖 Tư Vấn AI <span style="margin-left:auto;background:#e63946;color:#fff;font-size:9px;padding:1px 6px;border-radius:10px;">24/7</span></button>
+    <button class="nav-btn" onclick="showTab('content',this)">✍️ Viết Nội Dung</button>
+    <button class="nav-btn" onclick="showTab('ads',this)">📢 Tạo Quảng Cáo</button>
+    <button class="nav-btn" onclick="showTab('reply',this)">💬 Trả Lời Khách</button>
+    <button class="nav-btn" onclick="showTab('chat',this)">🤖 Tư Vấn AI <span style="margin-left:auto;background:#e63946;color:#fff;font-size:9px;padding:1px 6px;border-radius:10px;">24/7</span></button>
     <div class="nav-label" style="margin-top:8px;">Quản Lý</div>
-    <button class="nav-btn" onclick="showTab('leads')">👥 Khách Hàng <span style="margin-left:auto;background:#e63946;color:#fff;font-size:9px;padding:1px 6px;border-radius:10px;">3</span></button>
+    <button class="nav-btn" onclick="showTab('leads',this)">👥 Khách Hàng <span style="margin-left:auto;background:#e63946;color:#fff;font-size:9px;padding:1px 6px;border-radius:10px;">3</span></button>
   </div>
   <div class="hotline-box">
     <div class="hotline-inner">
@@ -288,6 +288,7 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
 </div>
 
 <script>
+const API_KEY = 'PASTE_YOUR_API_KEY_HERE';
 const SYSTEM = `Bạn là Marketing Agent chuyên nghiệp của TK.HOUSE - Thiết Kế & Xây Dựng TP.HCM.
 Hotline: 0909.82.9696 | Email: arc.tkhouse@gmail.com | 169 Trần Văn Đang, P.11, Q.3, TP.HCM
 15+ năm kinh nghiệm, 500+ công trình | Website: tk-house.id.vn
@@ -311,10 +312,8 @@ const STATUS = {
   won:{label:"Đã ký HĐ ✓",color:"#5eff8a",bg:"rgba(45,198,83,.2)"}
 };
 
-// Render leads
 function renderLeads() {
-  const tbody = document.getElementById('leads-body');
-  tbody.innerHTML = LEADS.map((l,i) => `
+  document.getElementById('leads-body').innerHTML = LEADS.map((l,i) => `
     <tr>
       <td><strong>${l.name}</strong><br><span style="font-size:11px;color:#6a6258;">${l.source}</span></td>
       <td>${l.phone}</td><td>${l.need}</td><td>${l.budget}</td>
@@ -325,15 +324,13 @@ function renderLeads() {
 }
 renderLeads();
 
-// Tab switching
-function showTab(id) {
+function showTab(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if(btn) btn.classList.add('active');
 }
 
-// Claude API call
 async function callClaude(prompt, outputId) {
   const el = document.getElementById(outputId);
   el.textContent = '🤖 AI đang tạo nội dung...';
@@ -341,12 +338,17 @@ async function callClaude(prompt, outputId) {
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
         system: SYSTEM,
-        messages: [{role:'user', content: prompt}]
+        messages: [{ role: 'user', content: prompt }]
       })
     });
     const d = await r.json();
@@ -365,7 +367,6 @@ function copyText(id) {
   alert('✅ Đã copy!');
 }
 
-// Quick actions
 async function quickAI(prompt, title) {
   document.getElementById('quick-card').style.display = 'block';
   document.getElementById('quick-title').textContent = '🤖 ' + title;
@@ -373,34 +374,27 @@ async function quickAI(prompt, title) {
   document.getElementById('quick-card').scrollIntoView({behavior:'smooth'});
 }
 
-// Generate post
 function genPost() {
   const type = document.getElementById('post-type').value;
   const desc = document.getElementById('post-desc').value;
   const tone = document.getElementById('post-tone').value;
-  const prompt = `Viết 1 bài đăng Facebook loại "${type}" cho TK.HOUSE. Thông tin: ${desc || 'Công trình nhà phố điển hình tại TPHCM'}. Giọng văn: ${tone}. Yêu cầu: 150-250 từ, emoji phù hợp, CTA gọi 0909.82.9696, 3-5 hashtag cuối bài.`;
-  callClaude(prompt, 'post-output');
+  callClaude(`Viết 1 bài đăng Facebook loại "${type}" cho TK.HOUSE. Thông tin: ${desc || 'Công trình nhà phố điển hình tại TPHCM'}. Giọng văn: ${tone}. Yêu cầu: 150-250 từ, emoji phù hợp, CTA gọi 0909.82.9696, 3-5 hashtag cuối bài.`, 'post-output');
 }
 
-// Generate ad
 function genAd() {
   const goal = document.getElementById('ad-goal').value;
   const svc = document.getElementById('ad-service').value;
   const usp = document.getElementById('ad-usp').value;
-  const prompt = `Tạo kịch bản quảng cáo Facebook cho TK.HOUSE:\n- Mục tiêu: ${goal}\n- Dịch vụ: ${svc}\n- Điểm mạnh: ${usp || 'thiết kế 3D miễn phí, bảo hành 5 năm, 15 năm kinh nghiệm'}\nYêu cầu:\n1. Primary text (150-200 từ)\n2. Headline (tối đa 40 ký tự)\n3. Description (30 ký tự)\n4. CTA button nên dùng loại nào?`;
-  callClaude(prompt, 'ad-output');
+  callClaude(`Tạo kịch bản quảng cáo Facebook cho TK.HOUSE:\n- Mục tiêu: ${goal}\n- Dịch vụ: ${svc}\n- Điểm mạnh: ${usp || 'thiết kế 3D miễn phí, bảo hành 5 năm, 15 năm kinh nghiệm'}\nYêu cầu:\n1. Primary text (150-200 từ)\n2. Headline (tối đa 40 ký tự)\n3. Description (30 ký tự)\n4. CTA button nên dùng loại nào?`, 'ad-output');
 }
 
-// Generate reply
 function genReply() {
   const type = document.getElementById('reply-type').value;
   const info = document.getElementById('reply-info').value;
   const channel = document.getElementById('reply-channel').value;
-  const prompt = `Viết ${type} cho TK.HOUSE qua kênh ${channel}.\n${info ? 'Thông tin khách: '+info : ''}\nYêu cầu: Tự nhiên, thuyết phục, chuyên nghiệp.`;
-  callClaude(prompt, 'reply-output');
+  callClaude(`Viết ${type} cho TK.HOUSE qua kênh ${channel}.\n${info ? 'Thông tin khách: '+info : ''}\nYêu cầu: Tự nhiên, thuyết phục, chuyên nghiệp.`, 'reply-output');
 }
 
-// Chat
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
@@ -413,12 +407,17 @@ async function sendChat() {
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
         system: SYSTEM + '\n\nTư vấn marketing thực chiến, cụ thể, ngắn gọn.',
-        messages: [{role:'user', content: msg}]
+        messages: [{ role: 'user', content: msg }]
       })
     });
     const d = await r.json();
@@ -434,17 +433,15 @@ async function sendChat() {
 
 function askQuick(q) {
   document.getElementById('chat-input').value = q;
-  showTab('chat');
+  showTab('chat', null);
   setTimeout(sendChat, 100);
 }
 
-// AI suggest for lead
 async function aiSuggest(i) {
   const l = LEADS[i];
   document.getElementById('lead-suggest-card').style.display = 'block';
   document.getElementById('lead-suggest-title').textContent = '🤖 Gợi Ý AI — ' + l.name;
-  const prompt = `Khách hàng ${l.name}, nhu cầu: ${l.need}, ngân sách: ${l.budget}.\nGợi ý cho TK.HOUSE:\n1. Script gọi điện ngắn (3-4 câu mở đầu)\n2. Điểm cần khai thác thêm\n3. Gói dịch vụ phù hợp nhất\n4. 1 offer đặc biệt để chốt nhanh`;
-  await callClaude(prompt, 'lead-suggest-output');
+  await callClaude(`Khách hàng ${l.name}, nhu cầu: ${l.need}, ngân sách: ${l.budget}.\nGợi ý cho TK.HOUSE:\n1. Script gọi điện ngắn (3-4 câu mở đầu)\n2. Điểm cần khai thác thêm\n3. Gói dịch vụ phù hợp nhất\n4. 1 offer đặc biệt để chốt nhanh`, 'lead-suggest-output');
   document.getElementById('lead-suggest-card').scrollIntoView({behavior:'smooth'});
 }
 </script>
