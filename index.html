@@ -112,9 +112,9 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
           <div class="quick-btns">
             <button class="quick-btn" onclick="quickAI('Viết 1 bài đăng Facebook Before/After công trình cho TK.HOUSE. 150-200 từ, emoji, hashtag, CTA gọi 0909.82.9696.','Viết Bài Đăng Fanpage')">✍️ Viết bài đăng Fanpage ngay</button>
             <button class="quick-btn" onclick="quickAI('Viết 1 mẫu quảng cáo Facebook Lead Ads cho TK.HOUSE, mục tiêu khách để lại SĐT. Primary text 100-150 từ + Headline + CTA.','Kịch Bản Quảng Cáo')">📢 Tạo kịch bản quảng cáo</button>
-            <button class="quick-btn" onclick="quickAI('Viết script gọi điện lead mới cho TK.HOUSE. Ngắn gọn, mục tiêu đặt lịch khảo sát. Có mở đầu - hỏi nhu cầu - chốt lịch hẹn.','Script Gọi Điện')">📞 Script gọi điện lead mới</button>
-            <button class="quick-btn" onclick="quickAI('Viết tin nhắn Zalo ngắn gọn gửi khách sau khi gọi không nghe máy. Thân thiện, CTA gọi lại 0909.82.9696.','Tin Nhắn Zalo')">📱 Soạn tin nhắn Zalo</button>
-            <button class="quick-btn" onclick="quickAI('Hướng dẫn cách TK.HOUSE tư vấn báo giá sơ bộ qua điện thoại cho nhà phố 4x15m 3 tầng TPHCM, ngân sách 1.5-2 tỷ.','Tư Vấn Báo Giá')">💰 Tư vấn báo giá sơ bộ</button>
+            <button class="quick-btn" onclick="quickAI('Viết script gọi điện lead mới cho TK.HOUSE. Ngắn gọn, mục tiêu đặt lịch khảo sát.','Script Gọi Điện')">📞 Script gọi điện lead mới</button>
+            <button class="quick-btn" onclick="quickAI('Viết tin nhắn Zalo ngắn gọn gửi khách sau khi gọi không nghe máy. CTA gọi lại 0909.82.9696.','Tin Nhắn Zalo')">📱 Soạn tin nhắn Zalo</button>
+            <button class="quick-btn" onclick="quickAI('Tư vấn báo giá sơ bộ qua điện thoại cho nhà phố 4x15m 3 tầng TPHCM, ngân sách 1.5-2 tỷ.','Tư Vấn Báo Giá')">💰 Tư vấn báo giá sơ bộ</button>
           </div>
         </div>
         <div class="card">
@@ -148,14 +148,14 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
         <div class="card">
           <label class="form-label">Loại nội dung</label>
           <select id="post-type">
-            <option value="Before & After công trình">🏠 Before & After công trình</option>
-            <option value="Kiến thức xây dựng">📐 Kiến thức xây dựng</option>
-            <option value="Phản hồi khách hàng">⭐ Phản hồi khách hàng</option>
-            <option value="Khuyến mãi ưu đãi">🎁 Khuyến mãi / Ưu đãi</option>
-            <option value="Lễ bàn giao công trình">🔑 Lễ bàn giao</option>
+            <option>Before & After công trình</option>
+            <option>Kiến thức xây dựng</option>
+            <option>Phản hồi khách hàng</option>
+            <option>Khuyến mãi ưu đãi</option>
+            <option>Lễ bàn giao công trình</option>
           </select>
           <label class="form-label">Mô tả công trình / nội dung</label>
-          <textarea id="post-desc" placeholder="VD: Nhà phố 5x18m, 4 tầng, Q.Bình Thạnh, phong cách hiện đại, thi công 90 ngày..."></textarea>
+          <textarea id="post-desc" placeholder="VD: Nhà phố 5x18m, 4 tầng, Q.Bình Thạnh..."></textarea>
           <label class="form-label">Tone giọng văn</label>
           <select id="post-tone">
             <option value="chuyên nghiệp và đáng tin">Chuyên nghiệp & Tin cậy</option>
@@ -166,7 +166,7 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
         </div>
         <div class="card">
           <div class="card-title">Kết Quả AI</div>
-          <div class="ai-box" id="post-output">Bài viết sẽ xuất hiện ở đây sau khi nhấn tạo...</div>
+          <div class="ai-box" id="post-output">Bài viết sẽ xuất hiện ở đây...</div>
           <button class="btn-outline" onclick="copyText('post-output')">📋 Copy</button>
           <button class="btn-outline" onclick="genPost()">🔄 Tạo Lại</button>
         </div>
@@ -213,18 +213,17 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
         <div class="card">
           <label class="form-label">Tình huống</label>
           <select id="reply-type">
-            <option value="script gọi điện cho lead mới vừa để lại thông tin">📞 Script gọi điện lead mới</option>
+            <option value="script gọi điện cho lead mới">📞 Script gọi điện lead mới</option>
             <option value="trả lời khách hỏi giá xây nhà">💰 Khách hỏi giá</option>
-            <option value="thuyết phục khách đang so sánh nhiều nhà thầu chọn TK.HOUSE">🤔 So sánh nhiều nhà thầu</option>
-            <option value="trấn an khách lo ngại về tiến độ thi công">⏰ Lo sợ chậm tiến độ</option>
-            <option value="xử lý khi khách muốn giảm giá thêm">💸 Muốn giảm giá</option>
-            <option value="tin nhắn follow up khách chưa quyết định sau 3-5 ngày">🔄 Follow up chưa quyết định</option>
-            <option value="xử lý phàn nàn khiếu nại của khách chuyên nghiệp">⚠️ Phàn nàn khiếu nại</option>
-            <option value="xin đánh giá 5 sao Google và Facebook">⭐ Xin đánh giá 5 sao</option>
-            <option value="xin giới thiệu khách hàng mới">👥 Xin giới thiệu khách mới</option>
+            <option value="thuyết phục khách đang so sánh nhiều nhà thầu">🤔 So sánh nhiều nhà thầu</option>
+            <option value="trấn an khách lo ngại về tiến độ">⏰ Lo sợ chậm tiến độ</option>
+            <option value="xử lý khi khách muốn giảm giá">💸 Muốn giảm giá</option>
+            <option value="follow up khách chưa quyết định">🔄 Follow up chưa quyết định</option>
+            <option value="xử lý phàn nàn khiếu nại">⚠️ Phàn nàn khiếu nại</option>
+            <option value="xin đánh giá 5 sao Google">⭐ Xin đánh giá 5 sao</option>
           </select>
           <label class="form-label">Thông tin khách (tuỳ chọn)</label>
-          <textarea id="reply-info" placeholder="VD: Anh Minh, 45 tuổi, đất 100m2 Q.7, ngân sách 3 tỷ..."></textarea>
+          <textarea id="reply-info" placeholder="VD: Anh Minh, 45 tuổi, đất 100m2 Q.7..."></textarea>
           <label class="form-label">Kênh liên lạc</label>
           <select id="reply-channel">
             <option value="cuộc gọi điện thoại">📞 Gọi điện</option>
@@ -247,11 +246,11 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
     <div id="page-chat" class="page">
       <div class="page-title">🤖 Tư Vấn Marketing AI</div>
       <div class="page-desc">Hỏi bất cứ điều gì về marketing, quảng cáo, chăm sóc khách hàng.</div>
-      <div class="card" style="display:flex;flex-direction:column;">
+      <div class="card">
         <div class="chat-msgs" id="chat-msgs">
           <div class="chat-row">
             <div class="chat-av">🏠</div>
-            <div class="chat-bubble">Xin chào! Tôi là Marketing Agent của TK.HOUSE. Hỏi bất cứ điều gì về marketing, quảng cáo, chăm sóc khách hàng nhé!</div>
+            <div class="chat-bubble">Xin chào! Tôi là Marketing Agent của TK.HOUSE. Hỏi bất cứ điều gì về marketing nhé!</div>
           </div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
@@ -273,7 +272,7 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
       <div style="font-size:13px;color:#6a6258;margin-bottom:20px;">Theo dõi lead từ lúc có thông tin đến khi ký hợp đồng.</div>
       <div class="card" style="overflow-x:auto;">
         <table>
-          <thead><tr><th>Khách Hàng</th><th>SĐT</th><th>Nhu Cầu</th><th>Ngân Sách</th><th>Trạng Thái</th><th>Ngày</th><th>Hành Động</th></tr></thead>
+          <thead><tr><th>Khách Hàng</th><th>SĐT</th><th>Nhu Cầu</th><th>Ngân Sách</th><th>Trạng Thái</th><th>Ngày</th><th>AI Gợi Ý</th></tr></thead>
           <tbody id="leads-body"></tbody>
         </table>
       </div>
@@ -288,7 +287,6 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
 </div>
 
 <script>
-const API_KEY = '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';
 const SYSTEM = `Bạn là Marketing Agent chuyên nghiệp của TK.HOUSE - Thiết Kế & Xây Dựng TP.HCM.
 Hotline: 0909.82.9696 | Email: arc.tkhouse@gmail.com | 169 Trần Văn Đang, P.11, Q.3, TP.HCM
 15+ năm kinh nghiệm, 500+ công trình | Website: tk-house.id.vn
@@ -304,7 +302,6 @@ const LEADS = [
   {name:"Hoàng Thị E",phone:"0945 678 901",need:"Cải tạo nhà 60m²",budget:"200–300tr",status:"meeting",source:"Giới thiệu",date:"3 ngày trước"},
   {name:"Vũ Minh F",phone:"0956 789 012",need:"Nhà phố 6x20m, 5T",budget:"4–5 tỷ",status:"won",source:"Facebook Ads",date:"2 tuần trước"},
 ];
-
 const STATUS = {
   new:{label:"Mới",color:"#4a9eff",bg:"rgba(74,158,255,.12)"},
   called:{label:"Đã gọi",color:"#c9a227",bg:"rgba(201,162,39,.12)"},
@@ -331,28 +328,18 @@ function showTab(id, btn) {
   if(btn) btn.classList.add('active');
 }
 
-async function callClaude(prompt, outputId) {
+async function callAPI(prompt, system, outputId) {
   const el = document.getElementById(outputId);
   el.textContent = '🤖 AI đang tạo nội dung...';
   el.classList.add('loading');
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('/api/claude', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        system: SYSTEM,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ prompt, system: system || SYSTEM })
     });
     const d = await r.json();
-    const text = d.content?.[0]?.text || d.error?.message || JSON.stringify(d).slice(0,200);
+    const text = d.content?.[0]?.text || d.error?.message || 'Có lỗi xảy ra.';
     el.textContent = text;
     el.classList.remove('loading');
     return text;
@@ -370,7 +357,7 @@ function copyText(id) {
 async function quickAI(prompt, title) {
   document.getElementById('quick-card').style.display = 'block';
   document.getElementById('quick-title').textContent = '🤖 ' + title;
-  await callClaude(prompt, 'quick-output');
+  await callAPI(prompt, SYSTEM, 'quick-output');
   document.getElementById('quick-card').scrollIntoView({behavior:'smooth'});
 }
 
@@ -378,21 +365,21 @@ function genPost() {
   const type = document.getElementById('post-type').value;
   const desc = document.getElementById('post-desc').value;
   const tone = document.getElementById('post-tone').value;
-  callClaude(`Viết 1 bài đăng Facebook loại "${type}" cho TK.HOUSE. Thông tin: ${desc || 'Công trình nhà phố điển hình tại TPHCM'}. Giọng văn: ${tone}. Yêu cầu: 150-250 từ, emoji phù hợp, CTA gọi 0909.82.9696, 3-5 hashtag cuối bài.`, 'post-output');
+  callAPI(`Viết 1 bài đăng Facebook loại "${type}" cho TK.HOUSE. Thông tin: ${desc||'Công trình nhà phố điển hình tại TPHCM'}. Giọng văn: ${tone}. Yêu cầu: 150-250 từ, emoji, CTA gọi 0909.82.9696, 3-5 hashtag.`, SYSTEM, 'post-output');
 }
 
 function genAd() {
   const goal = document.getElementById('ad-goal').value;
   const svc = document.getElementById('ad-service').value;
   const usp = document.getElementById('ad-usp').value;
-  callClaude(`Tạo kịch bản quảng cáo Facebook cho TK.HOUSE:\n- Mục tiêu: ${goal}\n- Dịch vụ: ${svc}\n- Điểm mạnh: ${usp || 'thiết kế 3D miễn phí, bảo hành 5 năm, 15 năm kinh nghiệm'}\nYêu cầu:\n1. Primary text (150-200 từ)\n2. Headline (tối đa 40 ký tự)\n3. Description (30 ký tự)\n4. CTA button nên dùng loại nào?`, 'ad-output');
+  callAPI(`Tạo kịch bản quảng cáo Facebook cho TK.HOUSE:\n- Mục tiêu: ${goal}\n- Dịch vụ: ${svc}\n- Điểm mạnh: ${usp||'thiết kế 3D miễn phí, bảo hành 5 năm'}\nYêu cầu:\n1. Primary text (150-200 từ)\n2. Headline (tối đa 40 ký tự)\n3. Description (30 ký tự)\n4. CTA button phù hợp`, SYSTEM, 'ad-output');
 }
 
 function genReply() {
   const type = document.getElementById('reply-type').value;
   const info = document.getElementById('reply-info').value;
   const channel = document.getElementById('reply-channel').value;
-  callClaude(`Viết ${type} cho TK.HOUSE qua kênh ${channel}.\n${info ? 'Thông tin khách: '+info : ''}\nYêu cầu: Tự nhiên, thuyết phục, chuyên nghiệp.`, 'reply-output');
+  callAPI(`Viết ${type} cho TK.HOUSE qua kênh ${channel}.${info?'\nThông tin khách: '+info:''}\nYêu cầu: Tự nhiên, thuyết phục, chuyên nghiệp.`, SYSTEM, 'reply-output');
 }
 
 async function sendChat() {
@@ -405,20 +392,10 @@ async function sendChat() {
   msgs.innerHTML += `<div class="chat-row" id="typing"><div class="chat-av">🏠</div><div class="chat-bubble" style="color:#c9a227;">Đang suy nghĩ...</div></div>`;
   msgs.scrollTop = msgs.scrollHeight;
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const r = await fetch('/api/claude', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        system: SYSTEM + '\n\nTư vấn marketing thực chiến, cụ thể, ngắn gọn.',
-        messages: [{ role: 'user', content: msg }]
-      })
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ prompt: msg, system: SYSTEM + '\nTư vấn marketing thực chiến, cụ thể, ngắn gọn.' })
     });
     const d = await r.json();
     const reply = d.content?.[0]?.text || 'Xin lỗi, có lỗi xảy ra.';
@@ -426,7 +403,7 @@ async function sendChat() {
     msgs.innerHTML += `<div class="chat-row"><div class="chat-av">🏠</div><div class="chat-bubble">${reply.replace(/\n/g,'<br>')}</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
   } catch(e) {
-    document.getElementById('typing').remove();
+    document.getElementById('typing')?.remove();
     msgs.innerHTML += `<div class="chat-row"><div class="chat-av">🏠</div><div class="chat-bubble">❌ Lỗi: ${e.message}</div></div>`;
   }
 }
@@ -441,7 +418,7 @@ async function aiSuggest(i) {
   const l = LEADS[i];
   document.getElementById('lead-suggest-card').style.display = 'block';
   document.getElementById('lead-suggest-title').textContent = '🤖 Gợi Ý AI — ' + l.name;
-  await callClaude(`Khách hàng ${l.name}, nhu cầu: ${l.need}, ngân sách: ${l.budget}.\nGợi ý cho TK.HOUSE:\n1. Script gọi điện ngắn (3-4 câu mở đầu)\n2. Điểm cần khai thác thêm\n3. Gói dịch vụ phù hợp nhất\n4. 1 offer đặc biệt để chốt nhanh`, 'lead-suggest-output');
+  await callAPI(`Khách hàng ${l.name}, nhu cầu: ${l.need}, ngân sách: ${l.budget}.\nGợi ý:\n1. Script gọi điện ngắn\n2. Điểm cần khai thác\n3. Gói dịch vụ phù hợp\n4. Offer đặc biệt để chốt nhanh`, SYSTEM, 'lead-suggest-output');
   document.getElementById('lead-suggest-card').scrollIntoView({behavior:'smooth'});
 }
 </script>
