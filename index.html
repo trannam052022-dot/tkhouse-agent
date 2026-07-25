@@ -328,16 +328,35 @@ function showTab(id, btn) {
   if(btn) btn.classList.add('active');
 }
 
+function getAdminKey() {
+  let key = localStorage.getItem('tkhouse_admin_key');
+  if (!key) {
+    key = prompt('Nhập mã truy cập TK.HOUSE Marketing Agent:') || '';
+    if (key) localStorage.setItem('tkhouse_admin_key', key);
+  }
+  return key;
+}
+
+async function apiFetch(body) {
+  return fetch('/api/claude', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'x-admin-key': getAdminKey()},
+    body: JSON.stringify(body)
+  });
+}
+
 async function callAPI(prompt, system, outputId) {
   const el = document.getElementById(outputId);
   el.textContent = '🤖 AI đang tạo nội dung...';
   el.classList.add('loading');
   try {
-    const r = await fetch('/api/claude', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ prompt, system: system || SYSTEM })
-    });
+    const r = await apiFetch({ prompt, system: system || SYSTEM });
+    if (r.status === 401) {
+      localStorage.removeItem('tkhouse_admin_key');
+      el.textContent = '❌ Sai mã truy cập. Tải lại trang và nhập lại.';
+      el.classList.remove('loading');
+      return;
+    }
     const d = await r.json();
     const text = d.content?.[0]?.text || d.error?.message || 'Có lỗi xảy ra.';
     el.textContent = text;
@@ -382,6 +401,8 @@ function genReply() {
   callAPI(`Viết ${type} cho TK.HOUSE qua kênh ${channel}.${info?'\nThông tin khách: '+info:''}\nYêu cầu: Tự nhiên, thuyết phục, chuyên nghiệp.`, SYSTEM, 'reply-output');
 }
 
+const chatHistory = [];
+
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
@@ -391,18 +412,26 @@ async function sendChat() {
   msgs.innerHTML += `<div class="chat-row user"><div class="chat-bubble">${msg}</div></div>`;
   msgs.innerHTML += `<div class="chat-row" id="typing"><div class="chat-av">🏠</div><div class="chat-bubble" style="color:#c9a227;">Đang suy nghĩ...</div></div>`;
   msgs.scrollTop = msgs.scrollHeight;
+  chatHistory.push({ role: 'user', content: msg });
   try {
-    const r = await fetch('/api/claude', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ prompt: msg, system: SYSTEM + '\nTư vấn marketing thực chiến, cụ thể, ngắn gọn.' })
+    const r = await apiFetch({
+      messages: chatHistory,
+      system: SYSTEM + '\nTư vấn marketing thực chiến, cụ thể, ngắn gọn.'
     });
+    if (r.status === 401) {
+      localStorage.removeItem('tkhouse_admin_key');
+      document.getElementById('typing')?.remove();
+      msgs.innerHTML += `<div class="chat-row"><div class="chat-av">🏠</div><div class="chat-bubble">❌ Sai mã truy cập. Tải lại trang và nhập lại.</div></div>`;
+      return;
+    }
     const d = await r.json();
     const reply = d.content?.[0]?.text || 'Xin lỗi, có lỗi xảy ra.';
+    chatHistory.push({ role: 'assistant', content: reply });
     document.getElementById('typing').remove();
     msgs.innerHTML += `<div class="chat-row"><div class="chat-av">🏠</div><div class="chat-bubble">${reply.replace(/\n/g,'<br>')}</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
   } catch(e) {
+    chatHistory.pop();
     document.getElementById('typing')?.remove();
     msgs.innerHTML += `<div class="chat-row"><div class="chat-av">🏠</div><div class="chat-bubble">❌ Lỗi: ${e.message}</div></div>`;
   }
