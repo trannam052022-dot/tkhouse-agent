@@ -82,8 +82,7 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
   </div>
   <div class="hotline-box">
     <div class="hotline-inner">
-      <div style="font-size:10px;color:#c9a227;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">Hotline</div>
-      <div style="font-size:13px;font-weight:600;color:#fff;">0909.82.9696</div>
+      <div style="font-size:10px;color:#c9a227;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">Liên hệ</div>
       <div style="font-size:11px;color:#6a6258;">arc.tkhouse@gmail.com</div>
     </div>
   </div>
@@ -110,10 +109,10 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
         <div class="card">
           <div class="card-title">⚡ Tạo Nhanh Với AI</div>
           <div class="quick-btns">
-            <button class="quick-btn" onclick="quickAI('Viết 1 bài đăng Facebook Before/After công trình cho TK.HOUSE. 150-200 từ, emoji, hashtag, CTA gọi 0909.82.9696.','Viết Bài Đăng Fanpage')">✍️ Viết bài đăng Fanpage ngay</button>
+            <button class="quick-btn" onclick="quickAI('Viết 1 bài đăng Facebook Before/After công trình cho TK.HOUSE. 150-200 từ, emoji, hashtag, CTA nhắn tin Fanpage.','Viết Bài Đăng Fanpage')">✍️ Viết bài đăng Fanpage ngay</button>
             <button class="quick-btn" onclick="quickAI('Viết 1 mẫu quảng cáo Facebook Lead Ads cho TK.HOUSE, mục tiêu khách để lại SĐT. Primary text 100-150 từ + Headline + CTA.','Kịch Bản Quảng Cáo')">📢 Tạo kịch bản quảng cáo</button>
             <button class="quick-btn" onclick="quickAI('Viết script gọi điện lead mới cho TK.HOUSE. Ngắn gọn, mục tiêu đặt lịch khảo sát.','Script Gọi Điện')">📞 Script gọi điện lead mới</button>
-            <button class="quick-btn" onclick="quickAI('Viết tin nhắn Zalo ngắn gọn gửi khách sau khi gọi không nghe máy. CTA gọi lại 0909.82.9696.','Tin Nhắn Zalo')">📱 Soạn tin nhắn Zalo</button>
+            <button class="quick-btn" onclick="quickAI('Viết tin nhắn Zalo ngắn gọn gửi khách sau khi gọi không nghe máy. CTA nhắn lại qua Zalo/Fanpage.','Tin Nhắn Zalo')">📱 Soạn tin nhắn Zalo</button>
             <button class="quick-btn" onclick="quickAI('Tư vấn báo giá sơ bộ qua điện thoại cho nhà phố 4x15m 3 tầng TPHCM, ngân sách 1.5-2 tỷ.','Tư Vấn Báo Giá')">💰 Tư vấn báo giá sơ bộ</button>
           </div>
         </div>
@@ -288,11 +287,11 @@ td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);}
 
 <script>
 const SYSTEM = `Bạn là Marketing Agent chuyên nghiệp của TK.HOUSE - Thiết Kế & Xây Dựng TP.HCM.
-Hotline: 0909.82.9696 | Email: arc.tkhouse@gmail.com | 169 Trần Văn Đang, P.11, Q.3, TP.HCM
+Email: arc.tkhouse@gmail.com | 169 Trần Văn Đang, P.11, Q.3, TP.HCM
 15+ năm kinh nghiệm, 500+ công trình | Website: tk-house.id.vn
 Dịch vụ: Thiết kế nội thất, kiến trúc, thi công xây dựng
 Giá: Gói TK 3-5tr/m², Gói TC 5-8tr/m², Gói Premium 8-15tr/m²
-Phong cách: Tiếng Việt, thân thiện, chuyên nghiệp, ngắn gọn, CTA gọi 0909.82.9696`;
+Phong cách: Tiếng Việt, thân thiện, chuyên nghiệp, ngắn gọn, CTA nhắn tin Fanpage`;
 
 const LEADS = [
   {name:"Nguyễn Văn A",phone:"0901 234 567",need:"Nhà phố 5x18m, 4T",budget:"2–3 tỷ",status:"new",source:"Facebook Ads",date:"Hôm nay"},
@@ -384,7 +383,7 @@ function genPost() {
   const type = document.getElementById('post-type').value;
   const desc = document.getElementById('post-desc').value;
   const tone = document.getElementById('post-tone').value;
-  callAPI(`Viết 1 bài đăng Facebook loại "${type}" cho TK.HOUSE. Thông tin: ${desc||'Công trình nhà phố điển hình tại TPHCM'}. Giọng văn: ${tone}. Yêu cầu: 150-250 từ, emoji, CTA gọi 0909.82.9696, 3-5 hashtag.`, SYSTEM, 'post-output');
+  callAPI(`Viết 1 bài đăng Facebook loại "${type}" cho TK.HOUSE. Thông tin: ${desc||'Công trình nhà phố điển hình tại TPHCM'}. Giọng văn: ${tone}. Yêu cầu: 150-250 từ, emoji, CTA nhắn tin Fanpage, 3-5 hashtag.`, SYSTEM, 'post-output');
 }
 
 function genAd() {
